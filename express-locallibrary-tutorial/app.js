@@ -8,8 +8,13 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 // database
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb+srv://mongoUser:mongoPassword@cluster0-immbg.mongodb.net/local_library?retryWrites=true';
+mongoose.connect(mongoDB, {useNewUrlParser: true});
 
-// var db = require('./db.js')
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error') );
 
 var app = express();
 
@@ -22,7 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(db);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
